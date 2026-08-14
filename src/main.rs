@@ -18,6 +18,17 @@ impl Model {
         const SPREAD: f32 = 10.0;
         // generate n verts
         let verts = (0..n).map(|_| V::new(random(), random())*SPREAD ).collect();
+
+        // every vert should have at least 1 neighboor
+
+        let edges = (0..(n-1)).map(|i| {
+            let j = (((n-i-1) as f32) * random()) as usize;
+            assert!(j < n, "expect j < n");
+
+            (*i, j)
+        }).collect();
+
+        Model { verts, edges }
     }
 }
 
