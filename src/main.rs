@@ -1,5 +1,5 @@
+use rand::random;
 use ultraviolet::Vec2;
-use rand::random();
 
 fn main() {
     println!("Hello, world!");
@@ -7,32 +7,40 @@ fn main() {
 
 type V = Vec2;
 
-struct Model {
+struct Graph {
     verts: Vec<V>,
     edges: Vec<(usize, usize)>,
 }
 
-impl Model {
+impl Graph {
     /// Generate a new random Model with n vertecice
     fn new_random(n: usize) -> Self {
         const SPREAD: f32 = 10.0;
         // generate n verts
-        let verts = (0..n).map(|_| V::new(random(), random())*SPREAD ).collect();
+        let verts = (0..n)
+            .map(|_| V::new(random(), random()) * SPREAD)
+            .collect();
 
         // every vert should have at least 1 neighboor
 
-        let edges = (0..(n-1)).map(|i| {
-            let j = (((n-i-1) as f32) * random()) as usize;
-            assert!(j < n, "expect j < n");
+        let edges = (0..(n - 1))
+            .map(|i| {
+                // remaining vert ids
+                let remaining = n - (i + 1);
 
-            (*i, j)
-        }).collect();
+                let j = ((remaining as f32) * random::<f32>()) as usize + i;
 
-        Model { verts, edges }
+                assert!(j < n, "expect j < n");
+
+                (i, j)
+            })
+            .collect();
+
+        Graph { verts, edges }
     }
 }
 
-fn error(model: &Model) -> f32 {
+fn error(model: &Graph) -> f32 {
     const DESIRED_DISTANCE: f32 = 1.0;
 
     let mut sum = 0.0;
