@@ -2,7 +2,14 @@ use rand::random;
 use ultraviolet::Vec2;
 
 fn main() {
-    println!("Hello, world!");
+    let g = Graph::random(10);
+
+    // for _ i 0..STEPS
+    //      differntiate error with respect to verts.
+    //      => yields a vector v' pointing in direction of "more error".
+    //      g.verts -= v' * 0.01;
+    //      (display graph)
+    // done
 }
 
 type V = Vec2;
@@ -14,7 +21,7 @@ struct Graph {
 
 impl Graph {
     /// Generate a new random Model with n vertecice
-    fn new_random(n: usize) -> Self {
+    fn random(n: usize) -> Self {
         const SPREAD: f32 = 10.0;
         // generate n verts
         let verts = (0..n)
