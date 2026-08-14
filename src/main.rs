@@ -1,12 +1,24 @@
 use ultraviolet::Vec2;
+use rand::random();
+
 fn main() {
     println!("Hello, world!");
 }
+
 type V = Vec2;
 
 struct Model {
     verts: Vec<V>,
     edges: Vec<(usize, usize)>,
+}
+
+impl Model {
+    /// Generate a new random Model with n vertecice
+    fn new_random(n: usize) -> Self {
+        const SPREAD: f32 = 10.0;
+        // generate n verts
+        let verts = (0..n).map(|_| V::new(random(), random())*SPREAD ).collect();
+    }
 }
 
 fn error(model: &Model) -> f32 {
